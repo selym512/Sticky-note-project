@@ -8,6 +8,7 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -43,7 +44,7 @@ public class sticky extends Application{
 	        TextArea UserNotes = new TextArea();
 	        
 	        //populate layouts and adjusts
-	        buttons.getChildren().addAll(NewStickyB, SaveStickyB);
+	        buttons.getChildren().addAll(NewStickyB);
 	        layout.getChildren().addAll(buttons, UserNotes);
 	        UserNotes.setWrapText(true);
 	        UserNotes.wrapTextProperty();
@@ -57,28 +58,21 @@ public class sticky extends Application{
 	        UserNotes.insertText(i, (scanner.nextLine() + '\n'));
 	        i = UserNotes.getCaretPosition();
 	        }
-	        
-	        
-	        //save button pressed
-	        SaveStickyB.setOnAction(new EventHandler<ActionEvent>(){
-	        	@Override public void handle(ActionEvent e){
-	        		//look into try catch block, test git
-					try {
-		        		PrintWriter writer;
-						writer = new PrintWriter("the-file-name.txt", "UTF-8");
-						for(int i = 0; i < UserNotes.getParagraphs().size(); i++){
-						writer.println(UserNotes.getParagraphs().get(i));
+	        UserNotes.setOnKeyTyped(
+	                e -> {
+	                	PrintWriter writer = null;
+						try {
+							writer = new PrintWriter("the-file-name.txt", "UTF-8");
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						for(int o = 0; o < UserNotes.getParagraphs().size(); o++){
+						writer.println(UserNotes.getParagraphs().get(o));
 						}
 		        		writer.close();
-		        		
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-	        		
-	        	}
-	        });
+	                }
+	 );
 	        
 	        
 	        primaryStage.show();
